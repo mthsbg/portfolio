@@ -12,6 +12,23 @@ const CATEGORY_LABEL: Record<ProjectCategory, string> = {
   graphic:  "Graphic design",
 }
 
+// Ordem específica da listagem em coluna única no mobile (independente do grid do desktop).
+const MOBILE_ORDER = [
+  "redesign-wallet-connect-mp",
+  "novo-poder",
+  "cucko",
+  "red-bull-rabiscada",
+  "dashboard-cbp-mp",
+  "colab",
+  "armazem-box-18",
+  "tired-workers-social-club",
+  "sofia-karaoke-club",
+  "chocolate-box-18",
+  "landing-page-assinaturas-mp",
+  "ilustracoes",
+  "marujinho",
+]
+
 const SIZES: Record<string, string> = {
   "dashboard-cbp-mp":            "(max-width: 768px) 100vw, 60vw",
   "sofia-karaoke-club":          "(max-width: 768px) 100vw, 60vw",
@@ -142,6 +159,10 @@ export default function Home() {
 
   const filtered = active === "all" ? projects : projects.filter((p) => p.category === active)
 
+  const mobileFiltered = [...filtered].sort(
+    (a, b) => MOBILE_ORDER.indexOf(a.slug) - MOBILE_ORDER.indexOf(b.slug)
+  )
+
   function toggle(val: ProjectCategory | "all") {
     setActive((prev) => (prev === val ? "all" : val))
   }
@@ -164,7 +185,7 @@ export default function Home() {
 
         {/* Header fixo */}
         <header
-          className="flex items-center justify-between px-6 py-6 sticky top-0 z-30"
+          className="flex items-center justify-between px-6 py-6 sticky top-0 z-50"
           style={{ background: "var(--bg)" }}
         >
           <LogoAnimation width={180} />
@@ -194,14 +215,22 @@ export default function Home() {
         {/* Drawer */}
         <div
           style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 40,
             overflow: "hidden",
             maxHeight: menuOpen ? "400px" : "0",
             transition: "max-height 300ms ease",
+            background: "rgba(237, 236, 232, 0.82)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
           }}
         >
           <div
             className="flex flex-col px-5 pb-8"
-            style={{ gap: "10px", paddingTop: "8px" }}
+            style={{ gap: "10px", paddingTop: "96px" }}
           >
             <SidebarContent
               active={active}
@@ -213,7 +242,7 @@ export default function Home() {
 
         {/* Projetos — coluna única */}
         <div className="flex flex-col px-3 pb-8" style={{ gap: "10px" }}>
-          {filtered.map((project) => (
+          {mobileFiltered.map((project) => (
             <a
               key={project.slug}
               href={`/projects/${project.slug}`}

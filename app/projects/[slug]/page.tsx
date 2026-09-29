@@ -3,6 +3,7 @@ import Image from "next/image"
 import LogoAnimation from "@/components/LogoAnimation"
 import { projects } from "@/data/projects"
 import { projectContent } from "@/data/project-content"
+import MobileNav from "@/components/MobileNav"
 
 const CATEGORY_LABEL: Record<string, string> = {
   product:  "Product design",
@@ -30,11 +31,16 @@ export default async function ProjectPage({
   const nextProject = projects[(index + 1) % projects.length]
 
   return (
-    <div className="flex min-h-screen" style={{ background: "var(--bg)" }}>
+    <div className="flex flex-col md:flex-row min-h-screen" style={{ background: "var(--bg)" }}>
+
+      <MobileNav links={[
+        { href: "/", label: "Projects" },
+        { href: "/archive", label: "Archive" },
+      ]} />
 
       {/* ── Sidebar ── */}
       <aside
-        className="w-96 shrink-0 flex flex-col pl-3 pt-3 pb-3 pr-6"
+        className="hidden md:flex w-96 shrink-0 md:flex-col pl-3 pt-3 pb-3 pr-6"
         style={{ position: "sticky", top: 0, height: "100vh" }}
       >
         <a href="/" className="mb-5 block" style={{ marginLeft: "-6px" }}>
@@ -98,11 +104,10 @@ export default async function ProjectPage({
         </div>
 
         {/* Project info */}
-        <div style={{ padding: "48px 48px 64px" }}>
+        <div className="px-5 py-10 md:px-12 md:py-16">
           <div
+            className="grid grid-cols-1 md:grid-cols-[220px_1fr]"
             style={{
-              display: "grid",
-              gridTemplateColumns: "220px 1fr",
               columnGap: "40px",
               rowGap: "28px",
               alignItems: "start",
@@ -242,7 +247,7 @@ export default async function ProjectPage({
               }
               if (row.layout === "grid") {
                 return (
-                  <div key={i} style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px" }}>
+                  <div key={i} className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {row.images.map((src, j) => (
                       <div key={j} style={{ position: "relative", aspectRatio: "1/1", borderRadius: "12px", overflow: "hidden" }}>
                         <Image

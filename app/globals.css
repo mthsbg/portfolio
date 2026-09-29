@@ -61,6 +61,20 @@ body {
 .archive-arrow-modal:hover {
   background: rgba(255, 255, 255, 0.25);
 }
+.archive-arrow-modal-left {
+  left: 8px;
+}
+.archive-arrow-modal-right {
+  right: 8px;
+}
+@media (min-width: 768px) {
+  .archive-arrow-modal-left {
+    left: -56px;
+  }
+  .archive-arrow-modal-right {
+    right: -56px;
+  }
+}
 
 .archive-modal-spinner {
   position: absolute;

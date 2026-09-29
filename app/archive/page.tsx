@@ -5,6 +5,7 @@ import Image from "next/image"
 import LogoAnimation from "@/components/LogoAnimation"
 import { archiveItems } from "@/data/archive"
 import type { ArchiveItem } from "@/data/archive"
+import MobileNav from "@/components/MobileNav"
 
 function ArrowIcon({ direction }: { direction: "left" | "right" }) {
   return (
@@ -214,16 +215,14 @@ function ArchiveModal({
             <button
               aria-label="Imagem anterior"
               onClick={(e) => go(-1, e)}
-              className="archive-arrow archive-arrow-modal"
-              style={{ left: "-56px" }}
+              className="archive-arrow archive-arrow-modal archive-arrow-modal-left"
             >
               <ArrowIcon direction="left" />
             </button>
             <button
               aria-label="Próxima imagem"
               onClick={(e) => go(1, e)}
-              className="archive-arrow archive-arrow-modal"
-              style={{ right: "-56px" }}
+              className="archive-arrow archive-arrow-modal archive-arrow-modal-right"
             >
               <ArrowIcon direction="right" />
             </button>
@@ -244,11 +243,16 @@ export default function Archive() {
   }
 
   return (
-    <div className="flex min-h-screen" style={{ background: "var(--bg)" }}>
+    <div className="flex flex-col md:flex-row min-h-screen" style={{ background: "var(--bg)" }}>
+
+      <MobileNav links={[
+        { href: "/", label: "Projects" },
+        { href: "/about", label: "About" },
+      ]} />
 
       {/* ── Sidebar ── */}
       <aside
-        className="w-96 shrink-0 flex flex-col pl-3 pt-3 pb-3 pr-6"
+        className="hidden md:flex w-96 shrink-0 md:flex-col pl-3 pt-3 pb-3 pr-6"
         style={{ position: "sticky", top: 0, height: "100vh" }}
       >
         <a href="/" className="mb-5 block" style={{ marginLeft: "-6px" }}>
@@ -275,13 +279,7 @@ export default function Archive() {
 
       {/* ── Main ── */}
       <main className="flex-1 p-3">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "12px",
-          }}
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {archiveItems.map((item, i) => (
             <ArchiveTile
               key={i}
